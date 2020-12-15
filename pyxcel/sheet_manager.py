@@ -1,6 +1,7 @@
 import datetime
 import re
 from typing import Any
+from shutil import copyfile
 
 import xlwings as xw
 from xlwings.main import Range
@@ -101,10 +102,7 @@ class SheetManager:
 
         t_epoch = int(datetime.datetime.now().timestamp())
         backup_path = re.sub(r'(.+)(\.xlsx)', rf'{t_epoch}_\1\2', self.path)
-        self.wb.save(backup_path)
-
-        self.wb.close()
-        self.wb = xw.Book(self.path)
+        copyfile(self.path, backup_path)
 
         return backup_path
 
